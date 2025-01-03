@@ -15,9 +15,11 @@
             <button  onclick="showPopUp()" class=" btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >
                 Upload file
             </button>
-            <button class="bg-blue-500 py-2 px-4 rounded text-white hover:bg-blue-700"> 
-                Logout
-            </button>
+              <form action="/api/logout" method="post">
+                <button class="bg-blue-500 py-2 px-4 rounded text-white hover:bg-blue-700"> 
+                    Logout
+                 </button>
+              </form>
         </div>
 
          <div class="pop hidden backdrop-blur rounded-lg fixed top-0 left-0 h-screen w-screen flex items-center justify-center">
@@ -58,7 +60,6 @@
                 </div>
                 <% }) %>
          </div>  
-            
      </main>
      <script>
             function showPopUp(){
@@ -67,6 +68,7 @@
             function hidePopUp(){
                 document.querySelector('.pop').style.display = "none"
             }   
+
      </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>

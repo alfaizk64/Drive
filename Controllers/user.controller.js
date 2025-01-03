@@ -3,6 +3,7 @@ const User = require("../Models/user.models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const secretKey = require("../config/authConfig");
+const filesUpload = require('../Models/files.models')
 
 const index_page = (req, res) => {
   res.render("index");
@@ -32,9 +33,10 @@ const register_user = async (req, res) => {
       password: hashedPassword,
     });
     user = await user.save();
-    res.status(200).send({
-      message: "User registered successfully",
-    });
+     res.redirect('/api/login') 
+    // res.status(200).send({
+    //   message: "User registered successfully",      
+    // });
   } catch (error) {
     res.status(404).send({
       message: error.message,
@@ -74,10 +76,15 @@ const login_user = async (req, res) => {
     };
     let token = jwt.sign(payload, secretKey, { expiresIn: "1h" });
     res.cookie("token", token);
+   
+      const userFile = await filesUpload.find({
+        uploadedBy:user._id
+      })
 
-    res.status(200).send({
-      message: "User logged in successfully",
-    });
+     res.redirect('/home')
+    // res.status(200).send({
+    //   message: "User logged in successfully",
+    // });
   } catch (error) {
     console.log(error);
     res.status(404).send({
@@ -86,10 +93,16 @@ const login_user = async (req, res) => {
   }
 };
 
+const logout_user = (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/api/login");
+};
+
 module.exports = {
   register_user,
   register_page,
   index_page,
   login_page,
   login_user,
+  logout_user
 };

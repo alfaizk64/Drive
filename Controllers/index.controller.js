@@ -60,7 +60,7 @@ const fileUpload = async (req, res) => {
                   folder: "Drive"
                  }
                  const uploadResponse = await cloudinary.uploader.upload(filePath,option);
-                           console.log(uploadResponse);
+                          //  console.log(uploadResponse);
                              
                             //  save file details in database
                         let newFile = new filesUpload({

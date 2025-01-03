@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv')
+const path = require('path');
 dotenv.config();
 const port = process.env.PORT || 3000
 const userRouter = require('./Routes/user.routes')
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(fileUpload())
 app.set('view engine', 'ejs');
+app.set('views', path.resolve('./Views'));
 
 // cloudinary connect
 cloudinaryconnect()
