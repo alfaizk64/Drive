@@ -127,10 +127,10 @@
                     alertBox.style.display = 'none';
                 }, 4000);
            }
-           const form = document.getElementById('uploadForm');
-    form.addEventListener('submit', async (e) => {
+           const formData = document.getElementById('uploadForm');
+    formData.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(form);
+      const formData = new FormData(formData);
       const response = await fetch('/upload-file', {
         method: 'POST',
         body: formData,
