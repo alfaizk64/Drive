@@ -8,12 +8,14 @@ const authenticatemiddleware = (req,res,next)=>{
         const token = req.cookies.token;
         
         if (!token) {
-            return res.status(401).send({ message: 'Token is not provided' });    
+            return res.status(401).redirect("/api/login")
+            // .send({ message: 'Token is not provided' });    
         }
         
           const decoded = jwt.verify(token, secretKey)
                  if(!decoded){
-                     return res.status(403).send({ message: 'Token is not valid' });
+                     return res.status(403).redirect("/api/login")
+                    //  .send({ message: 'Token is not valid' });
                  }
                  req.user = decoded;
                   
@@ -25,11 +27,11 @@ const authenticatemiddleware = (req,res,next)=>{
                return  next()
     } catch (error) {
         console.log(error + " error from middleware");
-        
-        res.status(500).send({ 
-            message: "Internal Server Error",
-            error: error.message
-        });
+        res.redirect('/api/error')
+        // res.status(500).send({ 
+        //     message: "Internal Server Error",
+        //     error: error.message
+        // });
     }
     
 }

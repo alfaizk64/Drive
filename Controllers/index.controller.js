@@ -7,8 +7,6 @@ const filesUpload = require('../Models/files.models');
 
 
 const home_page = async (req, res) => {
-
-    
        const userFile = await filesUpload.find({
         uploadedBy:req.user.id
        })
@@ -32,11 +30,12 @@ const fileUpload = async (req, res) => {
             });
         }
         const file = req.files.file;
-          //  console.log(file);
+           console.log(file);
            
-        const supportedfilestypes = ["jpeg","png","jpg",]
+        const supportedfilestypes = ["jpeg","png","jpg","mp4", "avi", "mov","pdf"]
         const filetype =file.name.split('.')[1].toLowerCase();
-          
+           console.log("File type is :" + filetype);
+             
         if(!isFileSupported(filetype,supportedfilestypes)){
           return res.status(400).send({
               success: false,
@@ -56,13 +55,21 @@ const fileUpload = async (req, res) => {
               await file.mv(filePath);
               //  uploading file to cloudinary 
                  //  saving file in cloudinary
+               const   resource_type = file.mimetype.startsWith("video") ? "video" : "image" // Use 'video' for videos, 'auto' for others
+                    
+                      console.log(resource_type + "resource type"); 
+                      
                  const option={
+                          resource_type:resource_type,
                   folder: "Drive"
-                 }
+                  
+                }
+                console.log(option);
                  const uploadResponse = await cloudinary.uploader.upload(filePath,option);
                           //  console.log(uploadResponse);
                              
-                            //  save file details in database
+                          //  save file details in database
+
                         let newFile = new filesUpload({
                           filename: file.name,
                           filepath:uploadResponse.secure_url,
@@ -87,7 +94,7 @@ const fileUpload = async (req, res) => {
                   success: true,
                   message: " File uploaded successfully",
                   newFile
-                });
+                })
   } catch (error) {
     console.log(error);
     res.status(404).send({

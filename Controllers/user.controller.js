@@ -77,10 +77,6 @@ const login_user = async (req, res) => {
     let token = jwt.sign(payload, secretKey, { expiresIn: "1h" });
     res.cookie("token", token);
    
-      const userFile = await filesUpload.find({
-        uploadedBy:user._id
-      })
-
      res.redirect('/home')
     // res.status(200).send({
     //   message: "User logged in successfully",

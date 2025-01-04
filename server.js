@@ -11,6 +11,8 @@ const indexRouter = require('./Routes/index.routes')
 const fileUpload = require('express-fileupload')
 const cloudinaryconnect = require('./config/cloudinary.config')
 
+
+
 // Middleware
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));

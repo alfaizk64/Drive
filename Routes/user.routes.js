@@ -23,4 +23,7 @@ router.post('/login-user',
 
 router.post('/logout',logout_user)
 
+router.get('/error',(req,res)=>{
+    res.status(404).render('404')
+})
 module.exports = router;
