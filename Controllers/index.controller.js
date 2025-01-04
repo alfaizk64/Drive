@@ -34,7 +34,7 @@ const fileUpload = async (req, res) => {
            
         const supportedfilestypes = ["jpeg","png","jpg","mp4", "avi", "mov","pdf"]
         const filetype =file.name.split('.')[1].toLowerCase();
-           console.log("File type is :" + filetype);
+          //  console.log("File type is :" + filetype);
              
         if(!isFileSupported(filetype,supportedfilestypes)){
           return res.status(400).send({
@@ -44,28 +44,26 @@ const fileUpload = async (req, res) => {
         }
 
     //  used for moving files in one file up from the current directory current directory mtlb __dirname or for moving one directory up from the current directory this below code is used
-    const parentDir = path.join(__dirname, "..");
+    // const parentDir = path.join(__dirname, "..");
     // console.log(parentDir); // Parent directory of __dirname
 
     //  creating file path
-    let filePath = parentDir + "/files/" + Date.now() + "." + filetype;
+    // let filePath = parentDir + "/files/" + Date.now() + "." + filetype;
               
     
     //  moving file in this folder / path in server
-              await file.mv(filePath);
+              // await file.mv(filePath);
               //  uploading file to cloudinary 
                  //  saving file in cloudinary
-               const   resource_type = file.mimetype.startsWith("video") ? "video" : "image" // Use 'video' for videos, 'auto' for others
-                    
-                      console.log(resource_type + "resource type"); 
+               const   resource_type = file.mimetype.startsWith("video") ? "video" : "auto" // Use 'video' for videos, 'auto' for other
                       
                  const option={
                           resource_type:resource_type,
                   folder: "Drive"
                   
                 }
-                console.log(option);
-                 const uploadResponse = await cloudinary.uploader.upload(filePath,option);
+                // console.log(option);
+                 const uploadResponse = await cloudinary.uploader.upload(file.tempFilePath,option);
                           //  console.log(uploadResponse);
                              
                           //  save file details in database
@@ -79,15 +77,15 @@ const fileUpload = async (req, res) => {
                               
                               newFile =  await newFile.save();
                     // Delete the local file after successful upload
-                        if (uploadResponse){
-                          fs.unlink(filePath, (unlinkErr) => {
-                            if (unlinkErr) {
-                              console.error("Error deleting local file:", unlinkErr);
-                            } else {
-                              console.log("Local file deleted successfully.");
-                            }
-                          });
-                        }
+                        // if (uploadResponse){
+                        //   fs.unlink(filePath, (unlinkErr) => {
+                        //     if (unlinkErr) {
+                        //       console.error("Error deleting local file:", unlinkErr);
+                        //     } else {
+                        //       console.log("Local file deleted successfully.");
+                        //     }
+                        //   });
+                        // }
 
 
                 res.status(200).send({
