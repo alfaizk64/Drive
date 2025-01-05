@@ -30,7 +30,7 @@ const fileUpload = async (req, res) => {
             });
         }
         const file = req.files.file;
-           console.log(file);
+          //  console.log(file);
            
         const supportedfilestypes = ["jpeg","png","jpg","mp4", "avi", "mov","pdf"]
         const filetype =file.name.split('.')[1].toLowerCase();
@@ -39,7 +39,7 @@ const fileUpload = async (req, res) => {
         if(!isFileSupported(filetype,supportedfilestypes)){
           return res.status(400).send({
               success: false,
-              message: "Unsupported file type. Please select a JPEG, PNG or JPG file.",
+              message: "Unsupported file type. Please select a JPEG, PNG, JPG, MP4, AVI, MOV, PDF file.",
             });
         }
 
@@ -55,12 +55,12 @@ const fileUpload = async (req, res) => {
               // await file.mv(filePath);
               //  uploading file to cloudinary 
                  //  saving file in cloudinary
-               const   resource_type = file.mimetype.startsWith("video") ? "video" : "auto" // Use 'video' for videos, 'auto' for other
+               const   resource_type = filetype === "pdf" ? "raw" :  file.mimetype.startsWith("video") ? "video" : "auto" // Use 'video' for videos, 'auto' for other
+                      // console.log("resource type: " + resource_type);
                       
                  const option={
-                          resource_type:resource_type,
+                          resource_type:"auto",
                   folder: "Drive"
-                  
                 }
                 // console.log(option);
                  const uploadResponse = await cloudinary.uploader.upload(file.tempFilePath,option);
@@ -96,6 +96,7 @@ const fileUpload = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(404).send({
+      success: false,
       message: error.message,
     });
   }
