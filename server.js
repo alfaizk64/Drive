@@ -29,6 +29,11 @@ cloudinaryconnect()
 
 
 // Routes
+app.get('/',
+    (req, res) => {
+        res.render('login');
+    }
+)
 app.use('/api', userRouter)
 app.use('/', indexRouter)
 
